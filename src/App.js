@@ -38,7 +38,6 @@ function randName(length) {
 }
 
 function App() {
-  const [name, setName] = useState("");
   const [usernameList, setUsernameList] = useState([]);
   // const usernameRef = useRef();
 
@@ -48,21 +47,26 @@ function App() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    // name isn't set by the time I use it below
-    setName(randName(randLength()));
-  }
-
-  useEffect(() => {
-    console.log(`give me the current "${name}"`);
     setUsernameList((usernameList) => {
       if (usernameList === []) {
-        return [name];
+        return [randName(randLength())];
       } else if (usernameList.length >= 20) {
         usernameList.shift();
-        return [...usernameList, name];
-      } else return [...usernameList, name];
+        return [...usernameList, randName(randLength())];
+      } else return [...usernameList, randName(randLength())];
     });
-  }, [name]);
+  }
+
+  // useEffect(() => {
+  //   setUsernameList((usernameList) => {
+  //     if (usernameList === []) {
+  //       return [randName(randLength())];
+  //     } else if (usernameList.length >= 20) {
+  //       usernameList.shift();
+  //       return [...usernameList, randName(randLength())];
+  //     } else return [...usernameList, randName(randLength())];
+  //   });
+  // }, [username]);
 
   const clearAllNames = (event) => {
     setUsernameList([]);
@@ -108,7 +112,7 @@ function App() {
         <button className="AddName" onClick={handleAddName}>Add Username</button>
       </form> */}
 
-      <h3> {name} </h3>
+      <h3> {usernameList[usernameList.length - 1]} </h3>
       <h4> {usernameList.length} Saved Names: </h4>
       <div>
         <ul>
