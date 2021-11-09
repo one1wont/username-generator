@@ -109,7 +109,7 @@ function App() {
       </form> */}
 
       <h3> {name} </h3>
-      <h4> {usernameList.length} Names: </h4>
+      <h4> {usernameList.length} Saved Names: </h4>
       <div>
         <ul>
           {usernameList.map((item) => {
