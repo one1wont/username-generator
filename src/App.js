@@ -85,10 +85,10 @@ function App() {
   //   usernameRef.current.value = null;
   // }
 
-  // function handleRemoveName(e) {
-  //   const removeName = e.target.getAttribute("name");
-  //   setSave(save.filter(item => item.name !== removeName));
-  // }
+  function handleRemoveName(e) {
+    const removeName = e.target.getAttribute("name");
+    setUsernameList(usernameList.filter((item) => item !== removeName));
+  }
 
   useEffect(() => {
     const storedUsernameList = JSON.parse(localStorage.getItem(storage_key));
@@ -119,10 +119,12 @@ function App() {
           {usernameList.map((item) => {
             return (
               <>
-                {/* <button name={item.name} onClick={handleRemoveName}>
-                X
-                </button> */}
-                <li key="{item}">{item}</li>
+                <li key={item}>
+                  <button name={item} onClick={handleRemoveName}>
+                    X
+                  </button>{" "}
+                  {item}{" "}
+                </li>
               </>
             );
           })}
