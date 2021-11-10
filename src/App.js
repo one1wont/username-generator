@@ -39,11 +39,7 @@ function randName(length) {
 
 function App() {
   const [usernameList, setUsernameList] = useState([]);
-  // const usernameRef = useRef();
-
-  // useEffect(() => {
-  //   return ""
-  // }, [name]);
+  const usernameRef = useRef();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -57,33 +53,36 @@ function App() {
     });
   }
 
-  // useEffect(() => {
-  //   setUsernameList((usernameList) => {
-  //     if (usernameList === []) {
-  //       return [randName(randLength())];
-  //     } else if (usernameList.length >= 20) {
-  //       usernameList.shift();
-  //       return [...usernameList, randName(randLength())];
-  //     } else return [...usernameList, randName(randLength())];
-  //   });
-  // }, [username]);
-
   const clearAllNames = (event) => {
     setUsernameList([]);
   };
 
-  // function handleAddName(e) {
-  //   const addedName = usernameRef.current.value;
-  //   if (addedName === "")
-  //     return;
-  //   setSave(save => {
-  //     if (save.length >= 20) {
-  //       save.shift();
-  //     }
-  //     return [...save, addedName];
-  //   });
-  //   usernameRef.current.value = null;
-  // }
+  function handleAddName(event) {
+    event.preventDefault();
+    const addedName = usernameRef.current.value;
+    if (addedName === "" || addedName.length < 4 || addedName.length > 16) {
+      usernameRef.current.value = null;
+      return;
+    }
+
+    const addedNameList = [...addedName];
+    const isInCharList = addedNameList.every((item) => charList.includes(item));
+    if (!isInCharList) {
+      usernameRef.current.value = null;
+      return;
+    }
+
+    setUsernameList((usernameList) => {
+      if (usernameList === []) {
+        return [addedName];
+      } else if (usernameList.length >= 20) {
+        usernameList.shift();
+        return [...usernameList, addedName];
+      } else return [...usernameList, addedName];
+    });
+
+    usernameRef.current.value = null;
+  }
 
   function handleRemoveName(e) {
     const removeName = e.target.getAttribute("name");
@@ -107,13 +106,15 @@ function App() {
         <input type="submit" value="Generate" />
       </form>
 
-      {/* <form>
-        <input type="text" placeholder="Or type username" />
-        <button className="AddName" onClick={handleAddName}>Add Username</button>
-      </form> */}
+      <form>
+        <input ref={usernameRef} type="text" placeholder="Or type username" />
+        <button className="AddName" onClick={handleAddName}>
+          Add Username
+        </button>
+      </form>
 
-      <h3> {usernameList[usernameList.length - 1]} </h3>
-      <h4> {usernameList.length} Saved Names: </h4>
+      <h3> Latest Username: {usernameList[usernameList.length - 1]} </h3>
+      <h5> {usernameList.length} Saved Names: </h5>
       <div>
         <ul>
           {usernameList.map((item) => {
